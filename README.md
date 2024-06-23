@@ -7,7 +7,7 @@ Despite its name, there is nothing Mac specific about this proxy. It was origina
 
 The proxy.py script runs a Flask server that takes all requests and proxies them, using html_utils.py to strip tags that are incompatible with, or pulls in contents that aren't parsable by old browsers such as Netscape 4 or MacWeb.
 
-The proxy server listens to port 5000 by default, but the port number can be changed using a command line parameter.
+The proxy server listens to port 5001 by default, but the port number can be changed using a command line parameter.
 
 Requirements
 ============
@@ -27,10 +27,10 @@ The start_macproxy.sh shell script will create and manage a venv Python environm
 ./start_macproxy.sh
 ```
 
-Launch with a specific port number (defaults to port 5000):
+Launch with a specific port number (defaults to port 5001):
 
 ```
-./start_macproxy.sh --port=5001
+./start_macproxy.sh --port=5002
 ```
 
 You may also start the Python script by itself, using system Python.
@@ -43,7 +43,7 @@ python3 proxy.py
 Launch with a specific port number:
 
 ```
-python3 proxy.py --port 5001
+python3 proxy.py --port 5002
 ```
 
 Docker
@@ -57,10 +57,10 @@ Either build an image yourself with `docker build`, or pull the [latest image fr
 docker pull rdmark/macproxy:latest
 ```
 
-Then launch the container with `docker run` (see below) or `docker compose up`. The examples assume the default port `5000`.
+Then launch the container with `docker run` (see below) or `docker compose up`. The examples assume the default port `5001`.
 
 ```
-docker run --rm -p 5000:5000 macproxy
+docker run --rm -p 5001:5001 macproxy
 ```
 
 The below advanced options can be passed to the container through the `PROXY_ARGS` environment variable.
