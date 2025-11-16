@@ -61,7 +61,10 @@ def post(path):
     if app.config["USER_AGENT"]:
         headers["User-Agent"] = app.config["USER_AGENT"]
     try:
-        resp = session.post(url, data=request.form, headers=headers, allow_redirects=True)
+        if request.method == "POST":
+            resp = session.post(url, data=request.form, headers=headers, allow_redirects=True)
+        else:
+            resp = session.get(url, params=request.args, headers=headers)
     except Exception as e:
         return abort(500, ERROR_HEADER + str(e))
 
