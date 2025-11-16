@@ -47,6 +47,8 @@ CONVERSION_TABLE = {
     "&bull;": b"*",
     "…": b"...",
     "&hellip;": b".",
+    "\u00A0": b" ",
+    "&nbsp;": b" ",
 
     # Math symbols
     "±": b"+/-",
@@ -56,6 +58,7 @@ CONVERSION_TABLE = {
     "≠": b"!=",
     "&ne;": b"!=",
     "&times;": b"x",
+    "⁄": b"/",
 
     # Miscellaneous symbols
     "°": b"*",
@@ -65,7 +68,13 @@ CONVERSION_TABLE = {
     "″": b"''",
     "&Prime;": b"''",
     "™": b"(tm)",
-    "&trade;": b"(tm)",
+    "&trade;": b"(TM)",
+    "®": b"(R)",
+    "&reg;": b"(R)",
+    "©": b"(c)",
+    "&copy;": b"(c)",
+    "⟨": b"<",
+    "⟩": b">",
 
     # Arrows
     "←": b"<",   # Left arrow
@@ -130,7 +139,14 @@ CONVERSION_TABLE = {
 
     # Musical note
     "♫": b"",
-    "&spades;": b""
+    "&spades;": b"",
+
+    # Zero-width space
+    "\u200B": b"",
+    "&ZeroWidthSpace;": b"",
+    "\u200C": b"",
+    "\u200D": b"",
+    "\uFEFF": b"",
 }
 
 def transcode_html(html, html_formatter, disable_char_conversion):
