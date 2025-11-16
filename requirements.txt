@@ -1,4 +1,4 @@
-beautifulsoup4==4.11.1
+beautifulsoup4==4.14.2
 certifi==2024.7.4
 charset-normalizer==3.3.2
 click==8.1.7
