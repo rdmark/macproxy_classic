@@ -3,7 +3,8 @@ HTML transcoding helper methods for Macproxy
 """
 
 from bs4 import BeautifulSoup
-import re
+from bs4.formatter import HTMLFormatter
+import html
 
 CONVERSION_TABLE = {
     # Currency symbols
@@ -149,18 +150,40 @@ CONVERSION_TABLE = {
     "\uFEFF": b"",
 }
 
+class URLAwareHTMLFormatter(HTMLFormatter):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def escape(self, string):
+        """
+        Escape special characters in the given string or list of strings.
+        """
+        if isinstance(string, list):
+            return [html.escape(str(item), quote=True) for item in string]
+        elif string is None:
+            return ''
+        else:
+            return html.escape(str(string), quote=True)
+
+    def attributes(self, tag):
+        for key, val in tag.attrs.items():
+            if key in ['href', 'src']:  # Don't escape URL attributes
+                yield key, val
+            else:
+                yield key, self.escape(val)
+
 def transcode_html(html, html_formatter, disable_char_conversion):
     """
     Uses BeautifulSoup to transcode payloads of the text/html content type
     """
-    # Ensure html is in bytes
-    if isinstance(html, str):
+    if isinstance(html, bytes):
         html = html.decode("utf-8", errors="replace")
 
     if not disable_char_conversion:
-        # Replace characters and entities based on the conversion table
         for key, replacement in CONVERSION_TABLE.items():
-            html = html.replace(key.encode("utf-8"), replacement)
+            if isinstance(replacement, bytes):
+                replacement = replacement.decode("utf-8")
+            html = html.replace(key, replacement)
 
     soup = BeautifulSoup(html, "html.parser")
 
@@ -181,7 +204,8 @@ def transcode_html(html, html_formatter, disable_char_conversion):
         if "src" in tag.attrs:
             tag["src"] = tag["src"].replace("https://", "http://")
 
-    html = str(soup)
+    # Use the custom formatter when converting the soup back to a string
+    html = soup.decode(formatter=URLAwareHTMLFormatter())
     html = html.replace('<br/>', '<br>')
     html = html.replace('<hr/>', '<hr>')
 
