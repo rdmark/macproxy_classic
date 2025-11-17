@@ -39,7 +39,7 @@ fi
 # Create the venv if it doesn't exist
 cd "$(dirname "$0")"
 if ! test -e venv; then
-	echo "Creating python venv for Macproxy Plus..."
+	echo "Creating python venv for Macproxy Classic..."
 	python3 -m venv venv
 	echo "Activating venv..."
 	source venv/bin/activate
@@ -83,5 +83,5 @@ while [ "$1" != "" ]; do
 	shift
 done
 
-echo "Starting Macproxy Plus..."
+echo "Starting Macproxy Classic..."
 python3 proxy.py ${PORT}
