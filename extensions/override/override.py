@@ -1,4 +1,4 @@
-from flask import request, render_template_string
+from flask import render_template_string
 
 DOMAIN = "override.test"
 

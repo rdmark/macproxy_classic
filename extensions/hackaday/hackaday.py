@@ -1,6 +1,5 @@
 ''' WARNING ! This module is (perhaps appropriately) very hacky. Avert your gaze... '''
 
-from flask import request, redirect, render_template_string
 import requests
 from bs4 import BeautifulSoup, Comment
 from datetime import datetime
