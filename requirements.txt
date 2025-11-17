@@ -8,7 +8,7 @@ Flask==3.1.2
 idna==3.11
 itsdangerous==2.2.0
 Jinja2==3.1.6
-MarkupSafe==3.0.2
+MarkupSafe==3.0.3
 pillow==12.0.0
 requests==2.32.4
 soupsieve==2.8
