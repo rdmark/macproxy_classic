@@ -4,13 +4,8 @@ import argparse
 from flask import Flask, request, session, g, abort, Response, send_from_directory
 from werkzeug.wrappers.response import Response as WerkzeugResponse
 from utils.html_utils import transcode_html, transcode_content
-from urllib.parse import urlparse, urljoin
-from bs4 import BeautifulSoup
-import io
-from PIL import Image
-import hashlib
+from urllib.parse import urlparse
 import shutil
-import mimetypes
 from utils.image_utils import is_image_url, fetch_and_cache_image, CACHE_DIR
 
 def load_preset():

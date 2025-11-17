@@ -1,8 +1,6 @@
-from flask import request
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
-import json
 
 DOMAIN = "hacksburg.org"
 
