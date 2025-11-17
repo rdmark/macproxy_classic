@@ -324,15 +324,24 @@ def process_response(response, url):
 def handle_default_request():
 	url = request.url.replace("https://", "http://", 1)
 	headers = prepare_headers()
-	
+
 	print(f"Handling default request for URL: {url}")
-	
+
 	try:
 		resp = send_request(url, headers)
 		content = resp.content
 		status_code = resp.status_code
 		headers = dict(resp.headers)
 		return process_response((content, status_code, headers), url)
+	except requests.exceptions.ConnectionError as e:
+		# Check for DNS resolution error
+		if hasattr(e, 'args') and e.args:
+			msg = str(e.args[0])
+			if "NameResolutionError" in msg or "nodename nor servname provided" in msg or "Failed to resolve" in msg:
+				print(f"DNS lookup failed for {url}: {msg}")
+				return abort(502, f"{ERROR_HEADER} DNS lookup failed for {url}. Please check the domain name.")
+		print(f"Connection error in handle_default_request: {str(e)}")
+		return abort(502, f"{ERROR_HEADER} Connection error: {str(e)}")
 	except Exception as e:
 		print(f"Error in handle_default_request: {str(e)}")
 		return abort(500, ERROR_HEADER + str(e))
