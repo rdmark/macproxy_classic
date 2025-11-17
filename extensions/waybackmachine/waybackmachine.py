@@ -1,5 +1,5 @@
-from flask import request, render_template_string
-from urllib.parse import urlparse, urlunparse, urljoin
+from flask import render_template_string
+from urllib.parse import urlparse
 import requests
 from bs4 import BeautifulSoup
 import datetime

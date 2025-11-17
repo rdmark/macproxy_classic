@@ -1,10 +1,8 @@
 # HINT: MacWeb 2.0 doesn't seem to have CSS support. To work around this, set <h5> styling to font="Palatino" and <h6> styling to font="Times", both with Size="As Is"
 
-from flask import request
 import requests
 from bs4 import BeautifulSoup, Comment
 import urllib.parse
-import re
 
 DOMAIN = "wikipedia.org"
 

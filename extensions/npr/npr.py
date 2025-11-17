@@ -1,4 +1,4 @@
-from flask import request, redirect
+from flask import redirect
 import requests
 from bs4 import BeautifulSoup
 
