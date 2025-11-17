@@ -1,19 +1,18 @@
-# To enable extensions, rename this file to "config.py"
-# and fill in the necessary API keys and other details.
+# Edit this file to configure Macproxy Classic settings
 
 # Used by weather extension (which currently only works for United States)
 # ZIP_CODE = "YOUR_ZIP_CODE"
 
-# Uncomment lines to enable desired extensions:
+# Commented-out extensions require additional preparation steps before they can be used.
 ENABLED_EXTENSIONS = [
-	#"hackaday",
+	"hackaday",
 	#"notyoutube",
-	#"npr",
-	#"reddit",
-	#"waybackmachine",
+	"npr",
+	"reddit",
+	"waybackmachine",
 	#"weather",
-	#"wiby",
-	#"wikipedia",
+	"wiby",
+	"wikipedia",
 ]
 
 # While SIMPLIFY_HTML is True, you can use WHITELISTED_DOMAINS to disable post-processing for
@@ -69,7 +68,7 @@ RESIZE_IMAGES = True
 MAX_IMAGE_WIDTH = 512 # Only used if RESIZE_IMAGES is True
 MAX_IMAGE_HEIGHT = 342 # Only used if RESIZE_IMAGES is True
 CONVERT_IMAGES = True
-CONVERT_IMAGES_TO_FILETYPE = "gif" # Only used if CONVERT_IMAGES is True
+CONVERT_IMAGES_TO_FILETYPE = "jpg" # Only used if CONVERT_IMAGES is True
 DITHERING_ALGORITHM = "FLOYDSTEINBERG" # Only used if CONVERT_IMAGES is True and CONVERT_IMAGES_TO_FILETYPE == "gif"
 
 # Conditionally enable/disable use of CONVERSION_TABLE
