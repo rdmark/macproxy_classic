@@ -12,6 +12,15 @@ HEADERS = {
                   "Chrome/119.0.0.0 Safari/537.36"
 }
 
+# Extract language code from host, default to 'en'
+def get_lang_from_host(req):
+	host = req.headers.get('Host', '')
+	if host.endswith('.wikipedia.org'):
+		lang = host.split('.')[0]
+		if lang and len(lang) <= 5:
+			return lang
+	return 'en'
+
 def create_search_form():
 	return '''
 	<br>
@@ -24,9 +33,9 @@ def create_search_form():
 	</center>
 	'''
 
-def get_featured_article_snippet():
+def get_featured_article_snippet(lang='en'):
 	try:
-		response = requests.get("https://en.wikipedia.org/wiki/Main_Page", headers=HEADERS)
+		response = requests.get(f"https://{lang}.wikipedia.org/wiki/Main_Page", headers=HEADERS)
 		response.raise_for_status()
 		soup = BeautifulSoup(response.text, 'html.parser')
 		tfa_div = soup.find('div', id='mp-tfa')
@@ -43,26 +52,27 @@ def process_html(content, title):
 
 def handle_request(req):
 	if req.method == 'GET':
+		lang = get_lang_from_host(req)
 		path = req.path.lstrip('/')
-		
+
 		if not path or path == 'wiki/':
 			search_query = req.args.get('search', '')
 			if not search_query:
-				content = create_search_form() + get_featured_article_snippet()
+				content = create_search_form() + get_featured_article_snippet(lang)
 				return process_html(content, "Wikipedia"), 200
 			
 			# Redirect to /wiki/[SEARCH_TERM]
-			return handle_wiki_page(search_query)
+			return handle_wiki_page(search_query, lang)
 
 		if path.startswith('wiki/'):
 			page_title = urllib.parse.unquote(path.replace('wiki/', ''))
-			return handle_wiki_page(page_title)
+			return handle_wiki_page(page_title, lang)
 
 	return "Method not allowed", 405
 
-def handle_wiki_page(title):
+def handle_wiki_page(title, lang='en'):
 	# First, try to search using the Wikipedia API
-	search_url = f"https://{DOMAIN}/w/api.php"
+	search_url = f"https://{lang}.wikipedia.org/w/api.php"
 	params = {
 		"action": "query",
 		"format": "json",
@@ -71,7 +81,7 @@ def handle_wiki_page(title):
 		"srprop": "",
 		"utf8": 1
 	}
-	
+
 	try:
 		search_response = requests.get(search_url, params=params, headers=HEADERS)
 		search_response.raise_for_status()
@@ -80,9 +90,9 @@ def handle_wiki_page(title):
 		if search_data["query"]["search"]:
 			# Get the title of the first search result
 			found_title = search_data["query"]["search"][0]["title"]
-			
+
 			# Now fetch the page using the found title
-			url = f"https://{DOMAIN}/wiki/{urllib.parse.quote(found_title)}"
+			url = f"https://{lang}.wikipedia.org/wiki/{urllib.parse.quote(found_title)}"
 			response = requests.get(url, headers=HEADERS)
 			response.raise_for_status()
 
@@ -131,7 +141,7 @@ def handle_wiki_page(title):
 				# Remove ambox tables
 				for element in content_div.select('table.ambox'):
 					element.decompose()
-				
+
 				# Remove style tags
 				for element in content_div.select('style'):
 					element.decompose()
@@ -139,7 +149,7 @@ def handle_wiki_page(title):
 				# Remove script tags
 				for element in content_div.select('script'):
 					element.decompose()
-				
+
 				# Remove edit section links
 				for element in content_div.select('span.mw-editsection'):
 					element.decompose()
@@ -155,19 +165,19 @@ def handle_wiki_page(title):
 				# Convert <h2> to <b> and insert <hr> after, with <br><br> before
 				for h2 in content_div.find_all('h2'):
 					new_structure = soup.new_tag('div')
-					
+
 					br1 = soup.new_tag('br')
 					br2 = soup.new_tag('br')
 					b_tag = soup.new_tag('b')
 					hr_tag = soup.new_tag('hr')
-					
+
 					b_tag.string = h2.get_text()
-					
+
 					new_structure.append(br1)
 					new_structure.append(br2)
 					new_structure.append(b_tag)
 					new_structure.append(hr_tag)
-					
+
 					h2.replace_with(new_structure)
 
 				# Unwrap <i> tags
@@ -186,7 +196,7 @@ def handle_wiki_page(title):
 				# Remove divs with class "reflist"
 				for div in content_div.find_all('div', class_='reflist'):
 					div.decompose()
-				
+
 				# Remove divs with class "sistersitebox"
 				for div in content_div.find_all('div', class_='sistersitebox'):
 					div.decompose()
@@ -202,7 +212,7 @@ def handle_wiki_page(title):
 				# Remove divs with class "navbox"
 				for navbox in content_div.find_all('div', class_='navbox'):
 					navbox.decompose()
-				
+
 				# Remove divs with class "navbox-styles"
 				for navbox in content_div.find_all('div', class_='navbox-styles'):
 					navbox.decompose()
@@ -210,7 +220,7 @@ def handle_wiki_page(title):
 				# Remove divs with class "printfooter"
 				for div in content_div.find_all('div', class_='printfooter'):
 					div.decompose()
-				
+
 				# Remove divs with class "refbegin"
 				for div in content_div.find_all('div', class_='refbegin'):
 					div.decompose()
@@ -222,11 +232,11 @@ def handle_wiki_page(title):
 				#remove tables with class "sidebar"
 				for table in soup.find_all('table', class_='sidebar'):
 					table.decompose()
-				
+
 				#remove tables with class "wikitable"
 				for table in soup.find_all('table', class_='wikitable'):
 					table.decompose()
-				
+
 				#remove tables with class "wikitable"
 				for table in soup.find_all('table', class_='mw-collapsible'):
 					table.decompose()
