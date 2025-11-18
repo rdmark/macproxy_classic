@@ -1,5 +1,7 @@
 services:
   macproxy:
-    image: macproxy
+    image: rdmark/macproxy:latest
+    environment:
+      - PORT=5001
     ports:
       - 5001:5001
