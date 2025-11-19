@@ -449,8 +449,12 @@ def send_request(url, headers):
 def apply_caching(resp):
     try:
         resp.headers["Content-Type"] = g.content_type
-    except:
-        pass
+    except AttributeError:
+        debug_print("g.content_type not set in apply_caching")
+    except KeyError:
+        debug_print("KeyError when setting Content-Type in apply_caching")
+    except Exception as e:
+        debug_print(f"Unexpected error in apply_caching: {e}")
     return resp
 
 
