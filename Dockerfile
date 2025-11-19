@@ -1,6 +1,7 @@
 FROM python:alpine3.22
 ENV PORT="5001"
+ENV EXTRA_ARGS=""
 WORKDIR /macproxy
 COPY . .
 RUN pip3 install -r requirements.txt
-CMD python3 proxy.py --port ${PORT}
+CMD python3 proxy.py --port ${PORT} ${EXTRA_ARGS}

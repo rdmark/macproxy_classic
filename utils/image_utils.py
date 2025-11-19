@@ -4,6 +4,7 @@ import hashlib
 import requests
 from PIL import Image, UnidentifiedImageError
 import mimetypes
+from utils.debug_utils import debug_print
 
 CACHE_DIR = os.path.join(os.path.dirname(__file__), "cached_images")
 USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36"
@@ -73,7 +74,7 @@ def optimize_image(image_data, resize=True, max_width=512, max_height=342,
 def fetch_and_cache_image(url, content=None, resize=True, max_width=512, max_height=342,
 						 convert=True, convert_to='gif', dithering='FLOYDSTEINBERG'):
 	try:
-		print(f"Processing image: {url}")
+		debug_print(f"Processing image: {url}")
 
 		# Generate filename with appropriate extension
 		extension = convert_to.lower() if convert and convert_to else "gif"
@@ -81,7 +82,7 @@ def fetch_and_cache_image(url, content=None, resize=True, max_width=512, max_hei
 		file_path = os.path.join(CACHE_DIR, file_name)
 
 		if not os.path.exists(file_path):
-			print(f"Optimizing and caching image: {url}")
+			debug_print(f"Optimizing and caching image: {url}")
 			if content is None:
 				try:
 					response = requests.get(url, stream=True, headers={"User-Agent": USER_AGENT})
@@ -116,10 +117,10 @@ def fetch_and_cache_image(url, content=None, resize=True, max_width=512, max_hei
 				print(f"Error saving image to cache: {file_path}, Error: {str(e)}")
 				return None
 		else:
-			print(f"Image already cached: {url}")
+			debug_print(f"Image already cached: {url}")
 
 		cached_url = f"/cached_image/{file_name}"
-		print(f"Cached URL: {cached_url}")
+		debug_print(f"Cached URL: {cached_url}")
 		return cached_url
 
 	except Exception as e:

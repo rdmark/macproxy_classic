@@ -7,6 +7,7 @@ import calendar
 import re
 import os
 import time
+from utils.debug_utils import debug_print
 
 DOMAIN = "web.archive.org"
 TARGET_DATE = "19960101"
@@ -142,7 +143,7 @@ def make_archive_request(url, follow_redirects=True, original_timestamp=None):
 		timestamp_to_use = original_timestamp if original_timestamp else find_closest_snapshot(url)
 		
 		wayback_url = construct_wayback_url(url, timestamp_to_use)
-		print(f'Requesting: {wayback_url}')
+		debug_print(f'Requesting: {wayback_url}')
 		response = session.get(wayback_url, timeout=10)
 		
 		# Handle Wayback Machine redirects
@@ -154,7 +155,7 @@ def make_archive_request(url, follow_redirects=True, original_timestamp=None):
 				redirect_match = re.search(r'Redirecting to\.\.\.\s*\n\s*(.*?)\s*$', content, re.MULTILINE)
 				if redirect_match:
 					redirect_url = redirect_match.group(1).strip()
-					print(f'Following Wayback redirect to: {redirect_url}')
+					debug_print(f'Following Wayback redirect to: {redirect_url}')
 					
 					# Make a new request to the redirect URL, maintaining original timestamp
 					return make_archive_request(
@@ -168,7 +169,7 @@ def make_archive_request(url, follow_redirects=True, original_timestamp=None):
 				redirect_match = re.search(r'window\.location\.replace\(["\'](.+?)["\']\)', content)
 				if redirect_match:
 					redirect_url = redirect_match.group(1).strip()
-					print(f'Following JS redirect to: {redirect_url}')
+					debug_print(f'Following JS redirect to: {redirect_url}')
 					
 					# Make a new request to the redirect URL, maintaining original timestamp
 					return make_archive_request(
@@ -326,7 +327,7 @@ def handle_request(req):
 
 	try:
 		url = req.url
-		print(f'Handling request for: {url}')
+		debug_print(f'Handling request for: {url}')
 		
 		response = make_archive_request(url)
 		
@@ -335,7 +336,7 @@ def handle_request(req):
 			raise Exception("Empty response received from archive")
 		
 		content_type = response.headers.get('Content-Type', '').split(';')[0].strip()
-		print(f"Content-Type: {content_type}")
+		debug_print(f"Content-Type: {content_type}")
 		
 		# Even if it's a 404, process and return the content as it might be an archived 404 page
 		if content_type.startswith('image/'):

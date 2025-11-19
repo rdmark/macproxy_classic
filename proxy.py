@@ -1,12 +1,14 @@
 import os
 import requests
 import argparse
+import logging
 from flask import Flask, request, session, g, abort, Response, send_from_directory
 from werkzeug.wrappers.response import Response as WerkzeugResponse
 from utils.html_utils import transcode_html, transcode_content
 from urllib.parse import urlparse
 import shutil
 from utils.image_utils import is_image_url, fetch_and_cache_image, CACHE_DIR
+from utils.debug_utils import debug_print
 
 def load_preset():
 	"""
@@ -75,18 +77,17 @@ def load_preset():
 					if old_value is None:
 						val = str(format_value(preset_value)).replace('\r\n', ' ').replace('\n', ' ').replace('\r', ' ')
 						truncated = val[:100] + ('...' if len(val) > 100 else '')
-						print(f"Preset '{preset_name}' set {var} to {truncated}")
+						debug_print(f"Preset '{preset_name}' set {var} to {truncated}")
 					else:
 						old_val = str(format_value(old_value)).replace('\r\n', ' ').replace('\n', ' ').replace('\r', ' ')
 						new_val = str(format_value(preset_value)).replace('\r\n', ' ').replace('\n', ' ').replace('\r', ' ')
 						old_truncated = old_val[:100] + ('...' if len(old_val) > 100 else '')
 						new_truncated = new_val[:100] + ('...' if len(new_val) > 100 else '')
-						print(f"Preset '{preset_name}' changed {var} from {old_truncated} to {new_truncated}")
+						debug_print(f"Preset '{preset_name}' changed {var} from {old_truncated} to {new_truncated}")
 		if changes_made:
-			print(f"Successfully loaded preset: {preset_name}")
+			debug_print(f"Successfully loaded preset: {preset_name}")
 		else:
-			print(f"Loaded preset '{preset_name}' (no changes were necessary)")
-
+			debug_print(f"Loaded preset '{preset_name}' (no changes were necessary)")
 	except Exception as e:
 		print(f"Error loading preset '{preset_name}': {str(e)}")
 		quit()
@@ -164,7 +165,7 @@ def handle_request(path):
 	host = parsed_url.netloc.split(':')[0]  # Remove port if present
 	
 	if override_extension:
-		print(f'Current override extension: {override_extension}')
+		debug_print(f'Current override extension: {override_extension}')
 
 	override_response = handle_override_extension(scheme)
 	if override_response is not None:
@@ -201,7 +202,7 @@ def check_override_status(extension_name):
 	global override_extension
 	if hasattr(extensions[extension_name], 'get_override_status') and not extensions[extension_name].get_override_status():
 		override_extension = None
-		print("Override disabled")
+		debug_print("Override disabled")
 
 def find_matching_extension(host):
 	for domain, extension in domain_to_extension.items():
@@ -211,17 +212,17 @@ def find_matching_extension(host):
 
 def handle_matching_extension(matching_extension):
 	global override_extension
-	print(f"Handling request with matching extension: {matching_extension.__name__}")
+	debug_print(f"Handling request with matching extension: {matching_extension.__name__}")
 	response = matching_extension.handle_request(request)
 	
 	if hasattr(matching_extension, 'get_override_status') and matching_extension.get_override_status():
 		override_extension = matching_extension.__name__
-		print(f"Override enabled for {override_extension}")
+		debug_print(f"Override enabled for {override_extension}")
 	
 	return response
 
 def process_response(response, url):
-	print(f"Processing response for URL: {url}")
+	debug_print(f"Processing response for URL: {url}")
 
 	if isinstance(response, tuple):
 		if len(response) == 3:
@@ -241,7 +242,7 @@ def process_response(response, url):
 		headers = {}
 
 	content_type = headers.get('Content-Type', '').lower()
-	print(f"Content-Type: {content_type}")
+	debug_print(f"Content-Type: {content_type}")
 
 	if content_type.startswith('image/'):
 		# For image content, use the fetch_and_cache_image function with config values
@@ -303,7 +304,7 @@ def process_response(response, url):
 	should_transcode = not any(content_type.startswith(t) for t in non_transcode_types)
 
 	if should_transcode:
-		print("Transcoding content")
+		debug_print("Transcoding content")
 		if isinstance(content, bytes):
 			content = content.decode('utf-8', errors='replace')
 		content = transcode_html(
@@ -318,21 +319,21 @@ def process_response(response, url):
 			conversion_table=config.CONVERSION_TABLE
 		)
 	else:
-		print(f"Content type {content_type} should not be transcoded, passing through unchanged")
+		debug_print(f"Content type {content_type} should not be transcoded, passing through unchanged")
 
 	response = Response(content, status_code)
 	for key, value in headers.items():
 		if key.lower() not in ['content-encoding', 'content-length']:
 			response.headers[key] = value
 
-	print("Finished processing response")
+	debug_print("Finished processing response")
 	return response
 
 def handle_default_request():
 	url = request.url.replace("https://", "http://", 1)
 	headers = prepare_headers()
 
-	print(f"Handling default request for URL: {url}")
+	debug_print(f"Handling default request for URL: {url}")
 
 	try:
 		resp = send_request(url, headers)
@@ -363,7 +364,7 @@ def prepare_headers():
 	return headers
 
 def send_request(url, headers):
-	print(f"Sending request to: {url}")
+	debug_print(f"Sending request to: {url}")
 	if request.method == "POST":
 		return session.post(url, data=request.form, headers=headers, allow_redirects=True)
 	else:
@@ -380,6 +381,11 @@ def apply_caching(resp):
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser(description="Macproxy command line arguments")
 	parser.add_argument(
+		"--debug",
+		action="store_true",
+		help="Enable debug mode",
+	)
+	parser.add_argument(
 		"--port",
 		type=int,
 		default=5001,
@@ -387,4 +393,7 @@ if __name__ == "__main__":
 		help="Port number the web server will run on",
 	)
 	arguments = parser.parse_args()
-	app.run(host="0.0.0.0", port=arguments.port, debug=False)
+	import utils.debug_utils
+	utils.debug_utils.DEBUG_MODE = arguments.debug
+	logging.getLogger('werkzeug').setLevel(logging.ERROR if not utils.debug_utils.DEBUG_MODE else logging.DEBUG)
+	app.run(host="0.0.0.0", port=arguments.port, debug=utils.debug_utils.DEBUG_MODE)
