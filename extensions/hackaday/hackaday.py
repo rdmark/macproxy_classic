@@ -310,7 +310,10 @@ def process_html(content, url):
         # Create the copyright div
         copyright_div = soup.new_tag("div")
         current_year = datetime.now().year
-        copyright_div.string = f"Copyright (c) {current_year} | Hackaday, Hack A Day, and the Skull and Wrenches Logo are Trademarks of Hackaday.com"
+        copyright_div.string = (
+            f"Copyright (c) {current_year} | Hackaday, Hack A Day, and the Skull and Wrenches Logo "
+            "are Trademarks of Hackaday.com"
+        )
         copyright_p = soup.new_tag("p")
         copyright_p.append(copyright_div)
 
@@ -402,10 +405,10 @@ def process_html(content, url):
     if masthead:
         ascii_art = r"""
 <pre>
-   __ __         __            ___           
+   __ __         __            ___
   / // /__ _____/ /__  ___ _  / _ \___ ___ __
  / _  / _ `/ __/  '_/ / _ `/ / // / _ `/ // /
-/_//_/\_,_/\__/_/\_\  \_,_/ /____/\_,_/\_, / 
+/_//_/\_,_/\__/_/\_\  \_,_/ /____/\_,_/\_, /
 fresh hacks every day                 /___/
 <br>
 </pre>

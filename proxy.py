@@ -2,7 +2,7 @@ import os
 import requests
 import argparse
 import logging
-from flask import Flask, request, session, g, abort, Response, send_from_directory
+from flask import Flask, request, g, abort, Response, send_from_directory
 from werkzeug.wrappers.response import Response as WerkzeugResponse
 from utils.html_utils import transcode_html, transcode_content
 from urllib.parse import urlparse
@@ -130,7 +130,11 @@ ERROR_HEADER = "[[Macproxy Encountered an Error]]"
 override_extension = None
 
 # User-Agent string
-USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36"
+USER_AGENT = (
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+    "AppleWebKit/537.36 (KHTML, like Gecko) "
+    "Chrome/91.0.4472.114 Safari/537.36"
+)
 
 
 # Call this function every time the proxy starts

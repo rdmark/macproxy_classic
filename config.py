@@ -6,11 +6,11 @@
 # Commented-out extensions require additional preparation steps before they can be used.
 ENABLED_EXTENSIONS = [
     "hackaday",
-    #"notyoutube",
+    # "notyoutube",
     "npr",
     "reddit",
     "waybackmachine",
-    #"weather",
+    # "weather",
     "wiby",
     "wikipedia",
 ]
@@ -19,14 +19,14 @@ ENABLED_EXTENSIONS = [
 # specific sites (only perform HTTPS -> HTTP conversion and character conversion (if CONVERT_CHARACTERS is True),
 # without otherwise modifying the page's source code).
 WHITELISTED_DOMAINS = [
-    #"example.com",
+    # "example.com",
 ]
 
 # Optionally, load a preset (.py file) from /presets, optimized for compatibility
 # with a specific web browser. Enabling a preset may override one or more of the
 # settings that follow below.
 # The default values target compatability with the MacWeb 2.0 browser.
-#PRESET = "wii_internet_channel"
+# PRESET = "wii_internet_channel"
 
 # --------------------------------------------------------------------------------------
 # *** One or more of the following settings may be overridden if you enable a preset ***
@@ -63,13 +63,13 @@ ATTRIBUTES_TO_STRIP = [
 ]
 
 # Process images for optimal rendering on your device/browser:
-CAN_RENDER_INLINE_IMAGES = False # Mostly used to conditionally enable landing page images (ex: waybackmachine.py)
+CAN_RENDER_INLINE_IMAGES = False  # Mostly used to conditionally enable landing page images (ex: waybackmachine.py)
 RESIZE_IMAGES = True
-MAX_IMAGE_WIDTH = 512 # Only used if RESIZE_IMAGES is True
-MAX_IMAGE_HEIGHT = 342 # Only used if RESIZE_IMAGES is True
+MAX_IMAGE_WIDTH = 512  # Only used if RESIZE_IMAGES is True
+MAX_IMAGE_HEIGHT = 342  # Only used if RESIZE_IMAGES is True
 CONVERT_IMAGES = True
-CONVERT_IMAGES_TO_FILETYPE = "jpg" # Only used if CONVERT_IMAGES is True
-DITHERING_ALGORITHM = "FLOYDSTEINBERG" # Only used if CONVERT_IMAGES is True and CONVERT_IMAGES_TO_FILETYPE == "gif"
+CONVERT_IMAGES_TO_FILETYPE = "jpg"  # Only used if CONVERT_IMAGES is True
+DITHERING_ALGORITHM = "FLOYDSTEINBERG"  # Only used if CONVERT_IMAGES is True and CONVERT_IMAGES_TO_FILETYPE == "gif"
 
 # Conditionally enable/disable use of CONVERSION_TABLE
 CONVERT_CHARACTERS = True
@@ -191,9 +191,9 @@ CONVERSION_TABLE = {
     "█": b"#",
     "&block;": b"#",
     "▌": b"|",
-    "&lhblk;": b"|",
+    "&#9612;": b"|",
     "▐": b"|",
-    "&rhblk;": b"|",
+    "&#9616;": b"|",
     "▀": b"-",
     "&uhblk;": b"-",
     "▄": b"_",

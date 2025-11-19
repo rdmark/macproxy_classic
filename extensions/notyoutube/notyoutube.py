@@ -1,4 +1,5 @@
-# HINT: "NOT Youtube" is not associated with or endorsed by YouTube, and does not connect to or otherwise interact with YouTube in any way.
+# HINT: "NOT Youtube" is not associated with or endorsed by YouTube,
+# and does not connect to or otherwise interact with YouTube in any way.
 
 import os
 import json
@@ -87,14 +88,14 @@ def generate_homepage():
         <body>
             <center>
 <pre>
-                                                   
-  ##      ##         ########     ##               
-   ##    ##             ##        ##               
-    ##  ## ####  ##  ## ## ##  ## #####   ####     
-     #### ##  ## ##  ## ## ##  ## ##  ## ##  ##    
-      ##  ##  ## ##  ## ## ##  ## ##  ## ######    
-      ##  ##  ## ##  ## ## ##  ## ##  ## ##        
- not  ##   ####   ##### ##  ##### #####   #####    
+
+  ##      ##         ########     ##
+   ##    ##             ##        ##
+    ##  ## ####  ##  ## ## ##  ## #####   ####
+     #### ##  ## ##  ## ## ##  ## ##  ## ##  ##
+      ##  ##  ## ##  ## ## ##  ## ##  ## ######
+      ##  ##  ## ##  ## ## ##  ## ##  ## ##
+ not  ##   ####   ##### ##  ##### #####   #####
 <br>
 </pre>
                 <form method="get" action="/results">

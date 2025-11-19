@@ -15,7 +15,11 @@ date_update_message = ""
 last_request_time = 0
 REQUEST_DELAY = 0.2  # Minimum time between requests in seconds
 
-USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36"
+USER_AGENT = (
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+    "AppleWebKit/537.36 (KHTML, like Gecko) "
+    "Chrome/91.0.4472.114 Safari/537.36"
+)
 
 # Create a session object for persistent connections
 session = requests.Session()
@@ -34,17 +38,20 @@ HTML_TEMPLATE = """
             {% if override_active %}
                 <select name="month">
                     {% for month in months %}
-                        <option value="{{ month }}" {% if month == selected_month %}selected{% endif %}>{{ month }}</option>
+                        <option value="{{ month }}" {% if month == selected_month %}
+                        selected{% endif %}>{{ month }}</option>
                     {% endfor %}
                 </select>
                 <select name="day">
                     {% for day in range(1, 32) %}
-                        <option value="{{ day }}" {% if day == selected_day %}selected{% endif %}>{{ day }}</option>
+                        <option value="{{ day }}" {% if day == selected_day %}
+                        selected{% endif %}>{{ day }}</option>
                     {% endfor %}
                 </select>
                 <select name="year">
                     {% for year in range(1996, current_year + 1) %}
-                        <option value="{{ year }}" {% if year == selected_year %}selected{% endif %}>{{ year }}</option>
+                        <option value="{{ year }}" {% if year == selected_year %}
+                        selected{% endif %}>{{ year }}</option>
                     {% endfor %}
                 </select>
                 <br>
@@ -56,7 +63,8 @@ HTML_TEMPLATE = """
         </form>
         <p>
             {% if override_active %}
-                <b>WayBack Machine enabled!</b>{% if date_update_message %} (date updated to <b>{{ date_update_message }}</b>){% endif %}<br>
+                <b>WayBack Machine enabled!</b>{% if date_update_message %}
+                (date updated to <b>{{ date_update_message }}</b>){% endif %}<br>
                 Enter a URL in the address bar, or click <b>disable</b> to quit.
             {% else %}
                 WayBack Machine disabled.<br>
@@ -119,7 +127,7 @@ def construct_wayback_url(url, timestamp):
 def find_closest_snapshot(url):
     """Use Wayback CDX API to find closest available snapshot"""
     try:
-        cdx_url = f"https://web.archive.org/cdx/search/cdx"
+        cdx_url = "https://web.archive.org/cdx/search/cdx"
         params = {
             "url": url,
             "matchType": "prefix",

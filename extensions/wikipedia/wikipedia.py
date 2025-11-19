@@ -1,4 +1,5 @@
-# HINT: MacWeb 2.0 doesn't seem to have CSS support. To work around this, set <h5> styling to font="Palatino" and <h6> styling to font="Times", both with Size="As Is"
+# HINT: MacWeb 2.0 doesn't seem to have CSS support.
+# To work around this, set <h5> styling to font="Palatino" and <h6> styling to font="Times", both with Size="As Is"
 
 import requests
 from bs4 import BeautifulSoup, Comment
@@ -114,12 +115,6 @@ def handle_wiki_page(title, lang="en"):
                 page_title = found_title.replace("_", " ")
 
             # Create the table with title and search form
-            search_form = f"""
-            <form action="/wiki/" method="get">
-                <input size="20" type="text" name="search" required>
-                <input type="submit" value="Go">
-            </form>
-            """
             header_table = f"""
             <table width="100%" cellspacing="0" cellpadding="0">
                 <tr>
@@ -281,11 +276,11 @@ def handle_wiki_page(title, lang="en"):
             return process_html(content, f"{page_title} - Wikipedia"), 200
 
         else:
-            return process_html("<p>No results found.</p>", f"Search - Wikipedia"), 404
+            return process_html("<p>No results found.</p>", "Search - Wikipedia"), 404
 
     except requests.RequestException as e:
         if hasattr(e, "response") and e.response.status_code == 404:
-            return process_html("<p>Page not found.</p>", f"Error - Wikipedia"), 404
+            return process_html("<p>Page not found.</p>", "Error - Wikipedia"), 404
         else:
             return process_html(f"<p>Error: {str(e)}</p>", "Error - Wikipedia"), 500
 

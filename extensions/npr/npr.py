@@ -8,7 +8,8 @@ DOMAIN = "npr.org"
 # This extension handles requests to the NPR website (npr.org).
 # It modifies URLs to ensure they are compatible with older browsers by converting them to absolute URLs.
 # Additionally, it removes the <header> tag containing the "Text-Only Version" message and link to the full site.
-# It redirects all requests from npr.org and text.npr.org to the proxy-modified npr.org while keeping the original domain in the address bar.
+# It redirects all requests from npr.org and text.npr.org to the proxy-modified npr.org
+# while keeping the original domain in the address bar.
 
 
 def handle_get(req):

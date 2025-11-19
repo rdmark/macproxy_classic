@@ -7,7 +7,11 @@ import mimetypes
 from utils.debug_utils import debug_print
 
 CACHE_DIR = os.path.join(os.path.dirname(__file__), "cached_images")
-USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36"
+USER_AGENT = (
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+    "AppleWebKit/537.36 (KHTML, like Gecko) "
+    "Chrome/91.0.4472.114 Safari/537.36"
+)
 
 
 def is_image_url(url):
