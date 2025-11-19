@@ -24,25 +24,29 @@ HTML_TEMPLATE = """
 
 override_active = False
 
+
 def get_override_status():
-	global override_active
-	return override_active
+    global override_active
+    return override_active
+
 
 def handle_request(req):
-	global override_active
+    global override_active
 
-	if req.method == 'POST':
-		action = req.form.get('action')
-		if action == 'Enable Override':
-			override_active = True
-		elif action == 'Disable Override':
-			override_active = False
+    if req.method == "POST":
+        action = req.form.get("action")
+        if action == "Enable Override":
+            override_active = True
+        elif action == "Disable Override":
+            override_active = False
 
-	status = "Override Active" if override_active else "Override Inactive"
-	
-	requested_url = req.url if override_active else ""
+    status = "Override Active" if override_active else "Override Inactive"
 
-	return render_template_string(HTML_TEMPLATE, 
-								  status=status, 
-								  override_active=override_active,
-								  requested_url=requested_url)
+    requested_url = req.url if override_active else ""
+
+    return render_template_string(
+        HTML_TEMPLATE,
+        status=status,
+        override_active=override_active,
+        requested_url=requested_url,
+    )
