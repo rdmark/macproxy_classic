@@ -525,13 +525,13 @@ fresh hacks every day                 /___/
         )
 
         new_html = f"""
-		<table width="100%">
-		<tr>
-			<td align="left">{older_html}</td>
-			<td align="right">{newer_html}</td>
-		</tr>
-		</table>
-		"""
+        <table width="100%">
+        <tr>
+            <td align="left">{older_html}</td>
+            <td align="right">{newer_html}</td>
+        </tr>
+        </table>
+        """
         nav_links.replace_with(BeautifulSoup(new_html, "html.parser"))
 
     # Extract the base URL and path

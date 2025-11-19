@@ -6,18 +6,18 @@ HTML_TEMPLATE = """
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Override Control</title>
+    <title>Override Control</title>
 </head>
 <body>
-	<h1>Override Control</h1>
-	<form method="post">
-		<input type="submit" name="action" value="Enable Override">
-		<input type="submit" name="action" value="Disable Override">
-	</form>
-	<p>Current status: {{ status }}</p>
-	{% if override_active %}
-	<p>Requested URL: {{ requested_url }}</p>
-	{% endif %}
+    <h1>Override Control</h1>
+    <form method="post">
+        <input type="submit" name="action" value="Enable Override">
+        <input type="submit" name="action" value="Disable Override">
+    </form>
+    <p>Current status: {{ status }}</p>
+    {% if override_active %}
+    <p>Requested URL: {{ requested_url }}</p>
+    {% endif %}
 </body>
 </html>
 """

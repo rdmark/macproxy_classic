@@ -25,45 +25,45 @@ HTML_TEMPLATE = """
 <!DOCTYPE html>
 <html>
 <head>
-	<title>WayBack Machine</title>
+    <title>WayBack Machine</title>
 </head>
 <body>
-	<center>{% if not override_active %}<br>{% endif %}
-		<font size="7"><h4>WayBack<br>Machine</h4></font>
-		<form method="post">
-			{% if override_active %}
-				<select name="month">
-					{% for month in months %}
-						<option value="{{ month }}" {% if month == selected_month %}selected{% endif %}>{{ month }}</option>
-					{% endfor %}
-				</select>
-				<select name="day">
-					{% for day in range(1, 32) %}
-						<option value="{{ day }}" {% if day == selected_day %}selected{% endif %}>{{ day }}</option>
-					{% endfor %}
-				</select>
-				<select name="year">
-					{% for year in range(1996, current_year + 1) %}
-						<option value="{{ year }}" {% if year == selected_year %}selected{% endif %}>{{ year }}</option>
-					{% endfor %}
-				</select>
-				<br>
-				<input type="submit" name="action" value="set date">
-				<input type="submit" name="action" value="disable">
-			{% else %}
-				<input type="submit" name="action" value="enable">
-			{% endif %}
-		</form>
-		<p>
-			{% if override_active %}
-				<b>WayBack Machine enabled!</b>{% if date_update_message %} (date updated to <b>{{ date_update_message }}</b>){% endif %}<br>
-				Enter a URL in the address bar, or click <b>disable</b> to quit.
-			{% else %}
-				WayBack Machine disabled.<br>
-				Click <b>enable</b> to begin.
-			{% endif %}
-		</p>
-	</center>
+    <center>{% if not override_active %}<br>{% endif %}
+        <font size="7"><h4>WayBack<br>Machine</h4></font>
+        <form method="post">
+            {% if override_active %}
+                <select name="month">
+                    {% for month in months %}
+                        <option value="{{ month }}" {% if month == selected_month %}selected{% endif %}>{{ month }}</option>
+                    {% endfor %}
+                </select>
+                <select name="day">
+                    {% for day in range(1, 32) %}
+                        <option value="{{ day }}" {% if day == selected_day %}selected{% endif %}>{{ day }}</option>
+                    {% endfor %}
+                </select>
+                <select name="year">
+                    {% for year in range(1996, current_year + 1) %}
+                        <option value="{{ year }}" {% if year == selected_year %}selected{% endif %}>{{ year }}</option>
+                    {% endfor %}
+                </select>
+                <br>
+                <input type="submit" name="action" value="set date">
+                <input type="submit" name="action" value="disable">
+            {% else %}
+                <input type="submit" name="action" value="enable">
+            {% endif %}
+        </form>
+        <p>
+            {% if override_active %}
+                <b>WayBack Machine enabled!</b>{% if date_update_message %} (date updated to <b>{{ date_update_message }}</b>){% endif %}<br>
+                Enter a URL in the address bar, or click <b>disable</b> to quit.
+            {% else %}
+                WayBack Machine disabled.<br>
+                Click <b>enable</b> to begin.
+            {% endif %}
+        </p>
+    </center>
 </body>
 </html>
 """
@@ -277,8 +277,8 @@ def process_html_content(content, base_url):
         # Remove Wayback Machine's injected elements
         for element in soup.select(
             'script[src*="/_static/"], script[src*="archive.org"], \
-								 link[href*="/_static/"], div[id*="wm-"], div[class*="wm-"], \
-								 style[id*="wm-"], div[id*="donato"], div[id*="playback"]'
+                                 link[href*="/_static/"], div[id*="wm-"], div[class*="wm-"], \
+                                 style[id*="wm-"], div[id*="donato"], div[id*="playback"]'
         ):
             element.decompose()
 

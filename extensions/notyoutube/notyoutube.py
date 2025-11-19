@@ -58,17 +58,17 @@ def generate_videos_html(videos, max_videos=6):
                 creator = video.get("creator", "Unknown creator")
                 description = video.get("description", "No description available")
                 html += f"""
-				<td width="60" valign="top"><img src="" width="50" height="40"></td>
-				<td valign="top" width="50%">
-					<b><a href="{url}">{title}</a></b>
-					<br>
-					<font size="2">
-						<b>{creator}</b>
-						<br>
-						{description}
-					</font>
-				</td>
-				"""
+                <td width="60" valign="top"><img src="" width="50" height="40"></td>
+                <td valign="top" width="50%">
+                    <b><a href="{url}">{title}</a></b>
+                    <br>
+                    <font size="2">
+                        <b>{creator}</b>
+                        <br>
+                        {description}
+                    </font>
+                </td>
+                """
         html += "</tr>"
     html += "</table>"
     return html
@@ -78,14 +78,14 @@ def generate_homepage():
     videos_html = generate_videos_html(RECOMMENDED_VIDEOS, max_videos=6)
     return render_template_string(
         """
-	<!DOCTYPE html>
-	<html lang="en">
-		<head>
-			<meta charset="UTF-8">
-			<title>NOT YouTube - Don't Broadcast Yourself</title>
-		</head>
-		<body>
-			<center>
+    <!DOCTYPE html>
+    <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <title>NOT YouTube - Don't Broadcast Yourself</title>
+        </head>
+        <body>
+            <center>
 <pre>
                                                    
   ##      ##         ########     ##               
@@ -97,17 +97,17 @@ def generate_homepage():
  not  ##   ####   ##### ##  ##### #####   #####    
 <br>
 </pre>
-				<form method="get" action="/results">
-					<input type="text" size="40" name="search_query" required style="font-size: 42px;">
-					<input type="submit" value="Search">
-				</form>
-				<br>
-			</center>
-			<hr>
-			{{ videos_html|safe }}
-		</body>
-	</html>
-	""",
+                <form method="get" action="/results">
+                    <input type="text" size="40" name="search_query" required style="font-size: 42px;">
+                    <input type="submit" value="Search">
+                </form>
+                <br>
+            </center>
+            <hr>
+            {{ videos_html|safe }}
+        </body>
+    </html>
+    """,
         videos_html=videos_html,
     )
 
@@ -116,22 +116,22 @@ def generate_search_results(search_results, query):
     videos_html = generate_search_results_html(search_results)
     return render_template_string(
         """
-	<!DOCTYPE html>
-	<html lang="en">
-		<head>
-			<meta charset="UTF-8">
-			<title>NOT YouTube - Search Results</title>
-		</head>
-		<body>
-			<form method="get" action="/results">
-				<input type="text" size="40" name="search_query" value="{{ query }}" required style="font-size: 16px;">
-				<input type="submit" value="Search">
-			</form>
-			<hr>
-			{{ videos_html|safe }}
-		</body>
-	</html>
-	""",
+    <!DOCTYPE html>
+    <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <title>NOT YouTube - Search Results</title>
+        </head>
+        <body>
+            <form method="get" action="/results">
+                <input type="text" size="40" name="search_query" value="{{ query }}" required style="font-size: 16px;">
+                <input type="submit" value="Search">
+            </form>
+            <hr>
+            {{ videos_html|safe }}
+        </body>
+    </html>
+    """,
         videos_html=videos_html,
         query=query,
     )
@@ -156,13 +156,13 @@ def generate_search_results_html(videos):
             formatted_description = "..."
 
         html += f"""
-		<b><a href="{url}">{title}</a></b><br>
-		<font size="2">
-			<b>{creator}</b><br>
-			{formatted_description}
-		</font>
-		<br><br>
-		"""
+        <b><a href="{url}">{title}</a></b><br>
+        <font size="2">
+            <b>{creator}</b><br>
+            {formatted_description}
+        </font>
+        <br><br>
+        """
     return html
 
 

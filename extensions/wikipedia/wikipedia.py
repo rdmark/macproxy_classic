@@ -25,15 +25,15 @@ def get_lang_from_host(req):
 
 def create_search_form():
     return """
-	<br>
-	<center>
-		<h6><font size="7" face="Times"><b>WIKIPEDIA</b></font><br>The Free Encyclopedia</h6>
-		<form action="/wiki/" method="get">
-			<input size="35" type="text" name="search" required>
-			<input type="submit" value="Search">
-		</form>
-	</center>
-	"""
+    <br>
+    <center>
+        <h6><font size="7" face="Times"><b>WIKIPEDIA</b></font><br>The Free Encyclopedia</h6>
+        <form action="/wiki/" method="get">
+            <input size="35" type="text" name="search" required>
+            <input type="submit" value="Search">
+        </form>
+    </center>
+    """
 
 
 def get_featured_article_snippet(lang="en"):
@@ -115,25 +115,25 @@ def handle_wiki_page(title, lang="en"):
 
             # Create the table with title and search form
             search_form = f"""
-			<form action="/wiki/" method="get">
-				<input size="20" type="text" name="search" required>
-				<input type="submit" value="Go">
-			</form>
-			"""
+            <form action="/wiki/" method="get">
+                <input size="20" type="text" name="search" required>
+                <input type="submit" value="Go">
+            </form>
+            """
             header_table = f"""
-			<table width="100%" cellspacing="0" cellpadding="0">
-				<tr>
-					<td valign="bottom"><h5><b><font size="5" face="Times">{page_title}</font></b></h5></td>
-					<td align="right" valign="middle">
-						<form action="/wiki/" method="get">
-							<input size="20" type="text" name="search" required>
-							<input type="submit" value="Go">
-						</form>
-					</td>
-				</tr>
-			</table>
-			<hr>
-			"""
+            <table width="100%" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td valign="bottom"><h5><b><font size="5" face="Times">{page_title}</font></b></h5></td>
+                    <td align="right" valign="middle">
+                        <form action="/wiki/" method="get">
+                            <input size="20" type="text" name="search" required>
+                            <input type="submit" value="Go">
+                        </form>
+                    </td>
+                </tr>
+            </table>
+            <hr>
+            """
 
             # Extract the main content
             content_div = soup.select_one("div#mw-content-text")
