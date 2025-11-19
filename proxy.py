@@ -385,7 +385,7 @@ def process_response(response, url):
 
     response = Response(content, status_code)
     for key, value in headers.items():
-        if key.lower() not in ["content-encoding", "content-length"]:
+        if key.lower() not in ["content-encoding", "content-length", "transfer-encoding"]:
             response.headers[key] = value
 
     debug_print("Finished processing response")
