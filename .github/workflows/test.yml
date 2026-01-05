@@ -1,0 +1,25 @@
+name: Test Macproxy Classic
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  test_proxy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+    - uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
+      with:
+        python-version: 3.9.25
+        cache: 'pip'
+    - run: pip install -r requirements.txt
+    - run: |
+        python3 proxy.py --port 5005 &
+        PID=$!
+        sleep 3
+        nc -z localhost 5005
+        sleep 2
+        kill $PID
