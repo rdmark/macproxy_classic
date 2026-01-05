@@ -99,7 +99,6 @@ months = [
 
 
 def get_override_status():
-    global override_active
     return override_active
 
 

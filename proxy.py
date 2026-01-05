@@ -197,7 +197,6 @@ def handle_image_request(url):
 @app.route("/", defaults={"path": "/"}, methods=["GET", "POST"])
 @app.route("/<path:path>", methods=["GET", "POST"])
 def handle_request(path):
-    global override_extension
     parsed_url = urlparse(request.url)
     scheme = parsed_url.scheme
     host = parsed_url.netloc.split(":")[0]  # Remove port if present
